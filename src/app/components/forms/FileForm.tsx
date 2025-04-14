@@ -101,7 +101,7 @@ const FileForm: React.FC<FileFormProps> = ({ data, onChange }) => {
         <ul className="text-xs text-yellow-700 dark:text-yellow-400 space-y-1 list-disc pl-4">
           <li>Make sure your file is hosted on a reliable service that won&apos;t remove it.</li>
           <li>Consider using cloud storage services like Google Drive, Dropbox, or OneDrive.</li>
-          <li>For documents, consider using PDF format as it's widely supported across devices.</li>
+          <li>For documents, consider using PDF format as it&apos;s widely supported across devices.</li>
           <li>Be aware of file size - large files may take time to download, especially on mobile data.</li>
           <li>If your file requires authentication, users will need to log in before accessing it.</li>
         </ul>

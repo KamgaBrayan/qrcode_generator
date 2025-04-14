@@ -2,7 +2,9 @@
 
 import React, { useState, useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
-import { QRCodeSettings, QRCodeType } from '../types';
+import { QRCodeSettings, QRCodeType, URLData, VCardData, CalendarData, 
+          MessageData, FileData, MenuData, LinksData, FormData, 
+          QRFormData, QRCodeCustomization } from '../types';
 import TypeSelector from '../components/TypeSelector';
 import URLForm from '../components/forms/URLForm';
 import VCardForm from '../components/forms/VCardForm';
@@ -24,7 +26,7 @@ const QRCodeGenerator: React.FC = () => {
   const [activeStep, setActiveStep] = useState<number>(1);
   const [qrSettings, setQRSettings] = useState<QRCodeSettings>({
     type: 'url',
-    data: { url: '' },
+    data: { url: '' } as URLData,
     customization: {
       foregroundColor: '#000000',
       backgroundColor: '#FFFFFF',
@@ -36,39 +38,39 @@ const QRCodeGenerator: React.FC = () => {
 
   // Handle type selection
   const handleTypeSelect = (type: QRCodeType) => {
-    let initialData;
+    let initialData: QRFormData;
     
     switch (type) {
       case 'url':
-        initialData = { url: '' };
+        initialData = { url: '' } as URLData;
         break;
       case 'vcard':
-        initialData = { firstName: '', lastName: '' };
+        initialData = { firstName: '', lastName: '' } as VCardData;
         break;
       case 'calendar':
         initialData = { 
           title: '', 
           startDate: new Date(), 
           endDate: new Date(new Date().getTime() + 60 * 60 * 1000) 
-        };
+        } as CalendarData;
         break;
       case 'message':
-        initialData = { message: '' };
+        initialData = { message: '' } as MessageData;
         break;
       case 'file':
-        initialData = { fileName: '', fileUrl: '' };
+        initialData = { fileName: '', fileUrl: '' } as FileData;
         break;
       case 'menu':
-        initialData = { restaurantName: '', items: [] };
+        initialData = { restaurantName: '', items: [] } as MenuData;
         break;
       case 'links':
-        initialData = { links: [] };
+        initialData = { links: [] } as LinksData;
         break;
       case 'form':
-        initialData = { formUrl: '' };
+        initialData = { formUrl: '' } as FormData;
         break;
       default:
-        initialData = { url: '' };
+        initialData = { url: '' } as URLData;
     }
     
     setQRSettings({
@@ -79,7 +81,7 @@ const QRCodeGenerator: React.FC = () => {
   };
 
   // Handle form data changes
-  const handleDataChange = (data: any) => {
+  const handleDataChange = (data: QRFormData) => {
     setQRSettings({
       ...qrSettings,
       data,
@@ -90,7 +92,7 @@ const QRCodeGenerator: React.FC = () => {
   };
 
   // Handle customization changes
-  const handleCustomizationChange = (customization: any) => {
+  const handleCustomizationChange = (customization: Partial<QRCodeCustomization>) => {
     setQRSettings({
       ...qrSettings,
       customization: {
@@ -109,36 +111,39 @@ const QRCodeGenerator: React.FC = () => {
   };
 
   // Generate QR value based on type and data
-  const generateQRValue = (type: QRCodeType, data: any) => {
+  const generateQRValue = (type: QRCodeType, data: QRFormData) => {
     let value = '';
     
     switch (type) {
       case 'url':
-        value = data.url || '';
+        value = (data as URLData).url || '';
         break;
-      case 'vcard':
+      case 'vcard': {
+        const vCardData = data as VCardData;
         // Format vCard data according to the vCard specification
-        if (data.firstName || data.lastName) {
+        if (vCardData.firstName || vCardData.lastName) {
           value = `BEGIN:VCARD
 VERSION:3.0
-N:${data.lastName || ''};${data.firstName || ''}
-FN:${data.firstName || ''} ${data.lastName || ''}
-${data.organization ? `ORG:${data.organization}\n` : ''}
-${data.title ? `TITLE:${data.title}\n` : ''}
-${data.email ? `EMAIL:${data.email}\n` : ''}
-${data.phone ? `TEL;TYPE=WORK,VOICE:${data.phone}\n` : ''}
-${data.mobile ? `TEL;TYPE=CELL,VOICE:${data.mobile}\n` : ''}
-${data.fax ? `TEL;TYPE=FAX:${data.fax}\n` : ''}
-${data.street || data.city || data.state || data.zip || data.country ? 
-  `ADR;TYPE=WORK:;;${data.street || ''};${data.city || ''};${data.state || ''};${data.zip || ''};${data.country || ''}\n` : ''}
-${data.website ? `URL:${data.website}\n` : ''}
-${data.note ? `NOTE:${data.note}\n` : ''}
+N:${vCardData.lastName || ''};${vCardData.firstName || ''}
+FN:${vCardData.firstName || ''} ${vCardData.lastName || ''}
+${vCardData.organization ? `ORG:${vCardData.organization}\n` : ''}
+${vCardData.title ? `TITLE:${vCardData.title}\n` : ''}
+${vCardData.email ? `EMAIL:${vCardData.email}\n` : ''}
+${vCardData.phone ? `TEL;TYPE=WORK,VOICE:${vCardData.phone}\n` : ''}
+${vCardData.mobile ? `TEL;TYPE=CELL,VOICE:${vCardData.mobile}\n` : ''}
+${vCardData.fax ? `TEL;TYPE=FAX:${vCardData.fax}\n` : ''}
+${vCardData.street || vCardData.city || vCardData.state || vCardData.zip || vCardData.country ? 
+  `ADR;TYPE=WORK:;;${vCardData.street || ''};${vCardData.city || ''};${vCardData.state || ''};${vCardData.zip || ''};${vCardData.country || ''}\n` : ''}
+${vCardData.website ? `URL:${vCardData.website}\n` : ''}
+${vCardData.note ? `NOTE:${vCardData.note}\n` : ''}
 END:VCARD`;
         }
         break;
-      case 'calendar':
+      }
+      case 'calendar': {
+        const calendarData = data as CalendarData;
         // Format calendar data according to the iCalendar specification
-        if (data.title && data.startDate && data.endDate) {
+        if (calendarData.title && calendarData.startDate && calendarData.endDate) {
           const formatDate = (date: Date) => {
             return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
           };
@@ -147,35 +152,40 @@ END:VCARD`;
 VERSION:2.0
 PRODID:-//QR Code Generator//EN
 BEGIN:VEVENT
-SUMMARY:${data.title}
-${data.description ? `DESCRIPTION:${data.description}\n` : ''}
-${data.location ? `LOCATION:${data.location}\n` : ''}
-DTSTART:${formatDate(new Date(data.startDate))}
-DTEND:${formatDate(new Date(data.endDate))}
+SUMMARY:${calendarData.title}
+${calendarData.description ? `DESCRIPTION:${calendarData.description}\n` : ''}
+${calendarData.location ? `LOCATION:${calendarData.location}\n` : ''}
+DTSTART:${formatDate(new Date(calendarData.startDate))}
+DTEND:${formatDate(new Date(calendarData.endDate))}
 END:VEVENT
 END:VCALENDAR`;
         }
         break;
+      }
       case 'message':
-        value = data.message || '';
+        value = (data as MessageData).message || '';
         break;
       case 'file':
-        value = data.fileUrl || '';
+        value = (data as FileData).fileUrl || '';
         break;
-      case 'menu':
+      case 'menu': {
+        const menuData = data as MenuData;
         // Format menu data as JSON
-        if (data.restaurantName && data.items && data.items.length > 0) {
-          value = JSON.stringify(data);
+        if (menuData.restaurantName && menuData.items && menuData.items.length > 0) {
+          value = JSON.stringify(menuData);
         }
         break;
-      case 'links':
+      }
+      case 'links': {
+        const linksData = data as LinksData;
         // Format links data as JSON
-        if (data.links && data.links.length > 0) {
-          value = JSON.stringify(data);
+        if (linksData.links && linksData.links.length > 0) {
+          value = JSON.stringify(linksData);
         }
         break;
+      }
       case 'form':
-        value = data.formUrl || '';
+        value = (data as FormData).formUrl || '';
         break;
       default:
         value = '';
@@ -188,23 +198,23 @@ END:VCALENDAR`;
   const renderForm = () => {
     switch (qrSettings.type) {
       case 'url':
-        return <URLForm data={qrSettings.data as any} onChange={handleDataChange} />;
+        return <URLForm data={qrSettings.data as URLData} onChange={handleDataChange} />;
       case 'vcard':
-        return <VCardForm data={qrSettings.data as any} onChange={handleDataChange} />;
+        return <VCardForm data={qrSettings.data as VCardData} onChange={handleDataChange} />;
       case 'calendar':
-        return <CalendarForm data={qrSettings.data as any} onChange={handleDataChange} />;
+        return <CalendarForm data={qrSettings.data as CalendarData} onChange={handleDataChange} />;
       case 'message':
-        return <MessageForm data={qrSettings.data as any} onChange={handleDataChange} />;
+        return <MessageForm data={qrSettings.data as MessageData} onChange={handleDataChange} />;
       case 'file':
-        return <FileForm data={qrSettings.data as any} onChange={handleDataChange} />;
+        return <FileForm data={qrSettings.data as FileData} onChange={handleDataChange} />;
       case 'menu':
-        return <MenuForm data={qrSettings.data as any} onChange={handleDataChange} />;
+        return <MenuForm data={qrSettings.data as MenuData} onChange={handleDataChange} />;
       case 'links':
-        return <LinksForm data={qrSettings.data as any} onChange={handleDataChange} />;
+        return <LinksForm data={qrSettings.data as LinksData} onChange={handleDataChange} />;
       case 'form':
-        return <FormForm data={qrSettings.data as any} onChange={handleDataChange} />;
+        return <FormForm data={qrSettings.data as FormData} onChange={handleDataChange} />;
       default:
-        return <URLForm data={qrSettings.data as any} onChange={handleDataChange} />;
+        return <URLForm data={qrSettings.data as URLData} onChange={handleDataChange} />;
     }
   };
 
@@ -214,28 +224,28 @@ END:VCALENDAR`;
       <div className="space-y-6">
         <PatternSelector 
           selected={qrSettings.customization.pattern} 
-          onChange={(pattern) => handleCustomizationChange({ pattern })} 
+          onChange={(pattern: string) => handleCustomizationChange({ pattern })} 
         />
         <EyeCustomizer 
           selected={qrSettings.customization.eyeStyle} 
-          onChange={(eyeStyle) => handleCustomizationChange({ eyeStyle })} 
+          onChange={(eyeStyle: string) => handleCustomizationChange({ eyeStyle })} 
         />
         <LogoUploader 
           logo={qrSettings.customization.logo} 
-          onChange={(logo) => handleCustomizationChange({ logo })} 
+          onChange={(logo: string) => handleCustomizationChange({ logo })} 
         />
         <ColorPicker 
           foregroundColor={qrSettings.customization.foregroundColor} 
           backgroundColor={qrSettings.customization.backgroundColor} 
-          onChange={(colors) => handleCustomizationChange(colors)} 
+          onChange={(colors: { foregroundColor?: string; backgroundColor?: string }) => handleCustomizationChange(colors)} 
         />
         <FrameSelector 
           selected={qrSettings.customization.frame} 
-          onChange={(frame) => handleCustomizationChange({ frame })} 
+          onChange={(frame: string) => handleCustomizationChange({ frame })} 
         />
         <TemplateGallery 
           selected={qrSettings.customization.template} 
-          onChange={(template) => handleCustomizationChange({ template })} 
+          onChange={(template: string) => handleCustomizationChange({ template })} 
         />
       </div>
     );

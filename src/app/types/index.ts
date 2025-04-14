@@ -92,11 +92,11 @@ export interface FormData {
 
 // QR Code Customization
 export interface QRCodeCustomization {
+  foregroundColor: string;
+  backgroundColor: string;
   pattern?: string;
   eyeStyle?: string;
   logo?: string;
-  foregroundColor?: string;
-  backgroundColor?: string;
   frame?: string;
   template?: string;
 }
@@ -107,4 +107,13 @@ export interface QRCodeSettings {
   data: URLData | VCardData | CalendarData | MessageData | FileData | MenuData | LinksData | FormData;
   customization: QRCodeCustomization;
   isDynamic: boolean;
+}
+
+// Type union utilitaire pour les données de formulaire
+export type QRFormData = URLData | VCardData | CalendarData | MessageData | FileData | MenuData | LinksData | FormData;
+
+// Props pour les composants de formulaire
+export interface FormComponentProps<T extends QRFormData> {
+  data: T;
+  onChange: (data: T) => void;
 }
