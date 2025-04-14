@@ -54,8 +54,8 @@ const FrameSelector: React.FC<FrameSelectorProps> = ({ selected, onChange }) => 
         <h4 className="text-sm font-medium text-yellow-800 dark:text-yellow-300 mb-2">Frame Tips</h4>
         <ul className="text-xs text-yellow-700 dark:text-yellow-400 space-y-1 list-disc pl-4">
           <li>Frames can help draw attention to your QR code.</li>
-          <li>A "Scan Me" frame can provide a clear call to action.</li>
-          <li>Make sure the frame doesn't interfere with the QR code's quiet zone (the white space around it).</li>
+          <li>A &quot;Scan Me&quot; frame can provide a clear call to action.</li>
+          <li>Make sure the frame doesn&apos;t interfere with the QR code&apos;s quiet zone (the white space around it).</li>
           <li>Choose a frame that complements your brand or the purpose of the QR code.</li>
         </ul>
       </div>

@@ -42,7 +42,7 @@ const FileForm: React.FC<FileFormProps> = ({ data, onChange }) => {
       // Check if URL is valid
       new URL(urlToCheck);
       setError('');
-    } catch (e) {
+    } catch {
       setError('Please enter a valid URL (e.g., https://example.com/file.pdf)');
     }
   };
@@ -99,7 +99,7 @@ const FileForm: React.FC<FileFormProps> = ({ data, onChange }) => {
       <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-md">
         <h4 className="text-sm font-medium text-yellow-800 dark:text-yellow-300 mb-2">Tips for File QR Codes</h4>
         <ul className="text-xs text-yellow-700 dark:text-yellow-400 space-y-1 list-disc pl-4">
-          <li>Make sure your file is hosted on a reliable service that won't remove it.</li>
+          <li>Make sure your file is hosted on a reliable service that won&apos;t remove it.</li>
           <li>Consider using cloud storage services like Google Drive, Dropbox, or OneDrive.</li>
           <li>For documents, consider using PDF format as it's widely supported across devices.</li>
           <li>Be aware of file size - large files may take time to download, especially on mobile data.</li>

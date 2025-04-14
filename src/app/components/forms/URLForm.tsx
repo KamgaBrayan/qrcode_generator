@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { URLData } from '../../types';
 
 interface URLFormProps {
@@ -39,7 +39,7 @@ const URLForm: React.FC<URLFormProps> = ({ data, onChange }) => {
       // Check if URL is valid
       new URL(urlToCheck);
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   };

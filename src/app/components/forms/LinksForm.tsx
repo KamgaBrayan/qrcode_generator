@@ -45,7 +45,7 @@ const LinksForm: React.FC<LinksFormProps> = ({ data, onChange }) => {
       new URL(urlToCheck);
       setError('');
       return true;
-    } catch (e) {
+    } catch {
       setError('Please enter a valid URL (e.g., https://example.com)');
       return false;
     }

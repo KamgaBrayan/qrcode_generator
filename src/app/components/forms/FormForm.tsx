@@ -42,7 +42,7 @@ const FormForm: React.FC<FormFormProps> = ({ data, onChange }) => {
       // Check if URL is valid
       new URL(urlToCheck);
       setError('');
-    } catch (e) {
+    } catch {
       setError('Please enter a valid URL (e.g., https://forms.google.com/...)');
     }
   };
@@ -99,11 +99,11 @@ const FormForm: React.FC<FormFormProps> = ({ data, onChange }) => {
       <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-md">
         <h4 className="text-sm font-medium text-yellow-800 dark:text-yellow-300 mb-2">Popular Form Services</h4>
         <ul className="text-xs text-yellow-700 dark:text-yellow-400 space-y-1 list-disc pl-4">
-          <li><strong>Google Forms</strong>: Create a form at <span className="text-blue-600 dark:text-blue-400">forms.google.com</span> and use the "Send" button to get the public link.</li>
-          <li><strong>Microsoft Forms</strong>: Create a form at <span className="text-blue-600 dark:text-blue-400">forms.office.com</span> and use the "Share" button to get the link.</li>
-          <li><strong>SurveyMonkey</strong>: Create a survey and use the "Collect Responses" option to get the web link.</li>
-          <li><strong>Typeform</strong>: Create a form and use the "Share" button to get the public link.</li>
-          <li><strong>JotForm</strong>: Create a form and use the "Publish" tab to get the form URL.</li>
+          <li><strong>Google Forms</strong>: Create a form at <span className="text-blue-600 dark:text-blue-400">forms.google.com</span> and use the &quot;Send&quot; button to get the public link.</li>
+          <li><strong>Microsoft Forms</strong>: Create a form at <span className="text-blue-600 dark:text-blue-400">forms.office.com</span> and use the &quot;Share&quot; button to get the link.</li>
+          <li><strong>SurveyMonkey</strong>: Create a survey and use the &quot;Collect Responses&quot; option to get the web link.</li>
+          <li><strong>Typeform</strong>: Create a form and use the &quot;Share&quot; button to get the public link.</li>
+          <li><strong>JotForm</strong>: Create a form and use the &quot;Publish&quot; tab to get the form URL.</li>
         </ul>
       </div>
 
@@ -111,7 +111,7 @@ const FormForm: React.FC<FormFormProps> = ({ data, onChange }) => {
         <h4 className="text-sm font-medium text-yellow-800 dark:text-yellow-300 mb-2">Tips for Form QR Codes</h4>
         <ul className="text-xs text-yellow-700 dark:text-yellow-400 space-y-1 list-disc pl-4">
           <li>Keep your form short and focused to increase completion rates.</li>
-          <li>Test your form on mobile devices to ensure it's easy to complete on smaller screens.</li>
+          <li>Test your form on mobile devices to ensure it&apos;s easy to complete on smaller screens.</li>
           <li>Consider adding a brief introduction explaining the purpose of the form.</li>
           <li>If possible, show a progress indicator so users know how much of the form is left.</li>
           <li>Make sure your form is accessible to all users, including those with disabilities.</li>
